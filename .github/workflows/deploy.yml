@@ -54,5 +54,10 @@ jobs:
       - name: Apply all Kubernetes manifests
         run: |
           kubectl apply -R -f manifests/
-      - id: "get-pods"
-        run: "kubectl get pods"
+      - id: get-pods
+        run: |
+          for ns in frontend backend database monitoring; do
+            echo "📦 Pods in namespace: $ns"
+            kubectl get pods -n "$ns"
+            echo ""
+          done
