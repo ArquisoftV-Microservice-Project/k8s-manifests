@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api
+  namespace: backend
+  labels:
+    app: auth-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-api
+  template:
+    metadata:
+      labels:
+        app: auth-api
+    spec:
+      containers:
+        - name: auth-api
+          image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/auth-api:latest
+          imagePullPolicy: Always
+          env:
+            - name: AUTH_API_PORT
+              value: "8000"
+            - name: JWT_SECRET
+              value: PRFT
+            - name: USERS_API_ADDRESS
+              value: http://users-api.backend.svc.cluster.local:8083
+            - name: ZIPKIN_URL
+              value: http://zipkin.monitoring.svc.cluster.local:9411/
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+      restartPolicy: Always
+      nodeSelector:
+        role: backend

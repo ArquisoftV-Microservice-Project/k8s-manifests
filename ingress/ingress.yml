@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+  namespace: frontend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / # Asegura que las rutas se manejen correctamente
+spec:
+  ingressClassName: nginx # Add this line instead
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend # Nombre de tu Service (el que definiste en service.yml)
+                port:
+                  number: 8080 # Puerto del Service (no el containerPort)

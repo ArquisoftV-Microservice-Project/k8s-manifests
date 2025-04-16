@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-message-processor
+  namespace: backend
+  labels:
+    app: log-message-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-message-processor
+  template:
+    metadata:
+      labels:
+        app: log-message-processor
+    spec:
+      containers:
+        - name: log-message-processor
+          image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/log-message-processor:latest
+          imagePullPolicy: Always
+          env:
+            - name: REDIS_CHANNEL
+              value: log_channel
+            - name: REDIS_HOST
+              value: redis.database.svc.cluster.local
+            - name: REDIS_PORT
+              value: "6379"
+            - name: ZIPKIN_URL
+              value: http://zipkin:9411/
+      restartPolicy: Always
+      nodeSelector:
+        role: backend

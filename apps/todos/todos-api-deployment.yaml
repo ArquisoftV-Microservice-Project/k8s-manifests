@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todos-api
+  namespace: backend
+  labels:
+    app: todos-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todos-api
+  template:
+    metadata:
+      labels:
+        app: todos-api
+    spec:
+      containers:
+        - name: todos-api
+          image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/todos-api:latest
+          imagePullPolicy: Always
+          env:
+            - name: JWT_SECRET
+              value: PRFT
+            - name: REDIS_CHANNEL
+              value: todos_channel
+            - name: REDIS_HOST
+              value: redis.database.svc.cluster.local
+            - name: REDIS_PORT
+              value: "6379"
+            - name: TODO_API_PORT
+              value: "8082"
+            - name: ZIPKIN_URL
+              value: http://zipkin.monitoring.svc.cluster.local:9411/
+          ports:
+            - containerPort: 8082
+              protocol: TCP
+      restartPolicy: Always
+      nodeSelector:
+        role: backend

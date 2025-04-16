@@ -1,0 +1,46 @@
+# prometheus-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s # Frecuencia de recolección de métricas
+      evaluation_interval: 15s # Frecuencia de evaluación de reglas
+
+    # Configuración de alertas (opcional)
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+              # - alertmanager:9093  # Descomenta si usas Alertmanager
+
+    # Reglas de alerta (opcional)
+    rule_files:
+      # - 'alert.rules.yml'        # Descomenta si tienes reglas personalizadas
+
+    # Jobs para scrapear métricas
+    scrape_configs:
+      # --- Microservicios ---
+
+      - job_name: "users-api"
+        metrics_path: "/prometheus"
+        static_configs:
+          - targets: ["users-api.backend.svc.cluster.local:8083"]
+
+      - job_name: "todos-api"
+        static_configs:
+          - targets: ["todos-api.backend.svc.cluster.local:8082"]
+
+      # --- Zipkin ---
+      - job_name: "zipkin"
+        metrics_path: "/actuator/prometheus"
+        static_configs:
+          - targets: ["zipkin:9411"]
+
+      # --- Prometheus (automonitoreo) ---
+      - job_name: "prometheus"
+        static_configs:
+          - targets: ["localhost:9090"]

@@ -1,0 +1,56 @@
+name: Deploy Manifests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set environment variables
+        run: |
+          echo "GCP_PROJECT=${{ secrets.GCP_PROJECT }}" >> $GITHUB_ENV
+
+      - name: Set up GCP credentials
+        run: |
+          echo "${{ secrets.GCP_SA_KEY_B64 }}" | base64 -d > terraform-key.json
+          echo 'GCP_CREDENTIALS<<EOF' >> $GITHUB_ENV
+          cat terraform-key.json >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/terraform-key.json" >> $GITHUB_ENV
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: ${{ env.GCP_CREDENTIALS }}
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          project_id: "${{ secrets.GCP_PROJECT }}"
+
+      - name: "Use gcloud CLI"
+        run: |
+          gcloud info
+          gcloud auth activate-service-account --key-file=terraform-key.json
+          gcloud auth configure-docker ${{ vars.GCP_ZONE }}-docker.pkg.dev
+
+      - id: "get-credentials"
+        uses: "google-github-actions/get-gke-credentials@v2"
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ vars.GCP_ZONE }}
+
+      - name: Apply all Kubernetes manifests
+        run: |
+          kubectl apply -R -f .
