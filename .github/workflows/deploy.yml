@@ -53,4 +53,6 @@ jobs:
 
       - name: Apply all Kubernetes manifests
         run: |
-          kubectl apply -R -f .
+          kubectl apply -R -f manifests/
+      - id: "get-pods"
+        run: "kubectl get pods"
