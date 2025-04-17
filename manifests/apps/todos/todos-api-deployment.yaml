@@ -16,7 +16,7 @@ spec:
         app: todos-api
     spec:
       containers:
-        - name: todos-api
+        - name: todos-api-container
           image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/todos-api:latest
           imagePullPolicy: Always
           env:

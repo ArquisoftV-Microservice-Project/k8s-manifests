@@ -16,7 +16,7 @@ spec:
         app: auth-api
     spec:
       containers:
-        - name: auth-api
+        - name: auth-api-container
           image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/auth-api:latest
           imagePullPolicy: Always
           env:

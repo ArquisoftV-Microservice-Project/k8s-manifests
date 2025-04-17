@@ -16,7 +16,7 @@ spec:
         app: log-message-processor
     spec:
       containers:
-        - name: log-message-processor
+        - name: log-message-processor-container
           image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/log-message-processor:latest
           imagePullPolicy: Always
           env:

@@ -16,7 +16,7 @@ spec:
         app: users-api
     spec:
       containers:
-        - name: users-api
+        - name: users-api-container
           image: us-central1-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/users-api:latest
           imagePullPolicy: Always
           env:
