@@ -34,7 +34,7 @@ spec:
               value: http://todos-api.backend.svc.cluster.local:8082
             - name: ZIPKIN_URL
               value: http://zipkin.monitoring.svc.cluster.local:9411/
-          image: us-east4-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/frontend:latest
+          image: us-east4-docker.pkg.dev/arquisoftv-microservice/microservice-registry/frontend:latest
           name: frontend-container
           imagePullPolicy: Always
           ports:

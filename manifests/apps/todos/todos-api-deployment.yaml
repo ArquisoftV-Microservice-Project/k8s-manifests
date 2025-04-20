@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: todos-api-container
-          image: us-east4-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/todos-api:latest
+          image: us-east4-docker.pkg.dev/arquisoftv-microservice/microservice-registry/todos-api:latest
           imagePullPolicy: Always
           env:
             - name: JWT_SECRET

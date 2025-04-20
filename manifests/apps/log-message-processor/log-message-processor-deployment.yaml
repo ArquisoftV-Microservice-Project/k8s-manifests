@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: log-message-processor-container
-          image: us-east4-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/log-message-processor:latest
+          image: us-east4-docker.pkg.dev/arquisoftv-microservice/microservice-registry/log-message-processor:latest
           imagePullPolicy: Always
           env:
             - name: REDIS_CHANNEL

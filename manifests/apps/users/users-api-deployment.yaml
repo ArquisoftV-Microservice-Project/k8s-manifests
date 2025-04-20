@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: users-api-container
-          image: us-east4-docker.pkg.dev/arquisoftv-microservice-app/microservice-registry/users-api:latest
+          image: us-east4-docker.pkg.dev/arquisoftv-microservice/microservice-registry/users-api:latest
           imagePullPolicy: Always
           env:
             - name: JWT_SECRET

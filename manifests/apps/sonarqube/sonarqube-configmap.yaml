@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonar-config
+  namespace: monitoring
+  labels:
+    app: sonar
+data:
+  # Must use FQDN for the database connection, well, database is on other namespace
+  SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres.database.svc.cluster.local:5432/sonar_db" 
+  SONARQUBE_JDBC_USERNAME: "sonar_user"
+  SONARQUBE_JDBC_PASSWORD: "S0N4RQUB3"
+  JAVA_OPTS: "-Duser.timezone=Asia/Jakarta -Xmx2048m" 
