@@ -2,18 +2,29 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend-ingress
-  namespace: frontend
+  namespace: frontend  # Asegúrate de que el namespace es el correcto
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: / # Asegura que las rutas se manejen correctamente
+    nginx.ingress.kubernetes.io/rewrite-target: /  # Asegura que las rutas se manejen correctamente
 spec:
-  ingressClassName: nginx # Add this line instead
+  ingressClassName: nginx
   rules:
-    - http:
+    - host: app.lkdlas.icu  # El subdominio que quieres usar
+      http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: frontend # Nombre de tu Service (el que definiste en service.yml)
+                name: frontend  # Nombre del servicio de Frontend
                 port:
-                  number: 8080 # Puerto del Service (no el containerPort)
+                  number: 8080  # El puerto del servicio Frontend (o el que hayas configurado)
+    - host: sonar.lkdlas.icu  # El subdominio que quieres usar
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sonar-svc  # Nombre del servicio de Sonar
+                port:
+                  number: 9000  # El puerto del servicio Sonar (o el que hayas configurado)

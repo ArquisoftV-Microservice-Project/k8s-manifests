@@ -10,4 +10,4 @@ spec:
   - port: 9000
     name: sonar
   selector:
-    app: sonar
+    app: sonar 
