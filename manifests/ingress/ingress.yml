@@ -18,13 +18,3 @@ spec:
                 name: frontend  # Nombre del servicio de Frontend
                 port:
                   number: 8080  # El puerto del servicio Frontend (o el que hayas configurado)
-    - host: sonar.lkdlas.icu  # El subdominio que quieres usar
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: sonar-svc  # Nombre del servicio de Sonar
-                port:
-                  number: 9000  # El puerto del servicio Sonar (o el que hayas configurado)
